@@ -3,360 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samuel & Luiza | Nossa História</title>
+    <title>Samuel & Luiza | 1 Ano</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-color: #0a0a0a; /* Fundo mais escuro como nos prints */
-            --card-bg: #140000; /* Fundo dos cards avermelhado escuro */
-            --accent-color: #ff2222; /* Vermelho mais intenso */
+            --bg-color: #0a0a0a;
+            --card-bg: #140000;
+            --accent-color: #ff2222;
             --text-color: #ffffff;
             --text-secondary: #cccccc;
-            --glow-strong: 0 0 25px rgba(255, 34, 34, 0.6); /* Brilho mais forte */
+            --glow-strong: 0 0 25px rgba(255, 34, 34, 0.6);
+            --glass-bg: rgba(20, 20, 20, 0.7);
+            --glass-border: 1px solid rgba(255, 34, 34, 0.3);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Montserrat', sans-serif; overflow-x: hidden; padding-bottom: 120px; }
 
-        body {
+        /* --- TELA DE INTRO (PRESENTE) --- */
+        #intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
-            padding-bottom: 120px; /* Espaço para o player */
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+            cursor: pointer;
+        }
+        #intro-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .gift-icon { font-size: 8rem; animation: pulse-gift 2s infinite; filter: drop-shadow(0 0 20px var(--accent-color)); }
+        .intro-text { margin-top: 20px; font-size: 1.5rem; color: var(--text-color); font-weight: 300; letter-spacing: 2px; }
+        @keyframes pulse-gift {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
-        /* Animação de Corações no Fundo */
-        #hearts-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
+        /* Fundo Animado */
+        #hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        .heart { position: absolute; color: var(--accent-color); opacity: 0.4; animation: fall linear forwards; }
+        @keyframes fall { to { transform: translateY(105vh); } }
 
-        .heart {
-            position: absolute;
-            color: var(--accent-color);
-            opacity: 0.4;
-            animation: fall linear forwards;
-        }
-
-        @keyframes fall {
-            to { transform: translateY(105vh); }
-        }
-
-        /* Layout Principal */
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-
-        /* Typography Utils */
-        .cursive-font {
-            font-family: 'Great Vibes', cursive;
-            font-weight: 400;
-        }
+        /* Layout */
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; text-align: center; opacity: 0; transition: opacity 1s ease-in; }
+        .container.visible { opacity: 1; }
+        .cursive-font { font-family: 'Great Vibes', cursive; font-weight: 400; }
 
         /* Header */
-        header {
-            margin-top: 50px;
-            margin-bottom: 50px;
-        }
+        header { margin-top: 40px; margin-bottom: 30px; }
+        h1.main-title { font-size: 4rem; color: var(--text-color); text-shadow: 0 0 15px rgba(255, 34, 34, 0.5); margin-bottom: 10px; }
+        .date-display { font-size: 1.1rem; color: var(--text-secondary); letter-spacing: 1px; }
 
-        h1.main-title {
-            font-size: 4.5rem;
-            color: var(--text-color);
-            text-shadow: 0 0 15px rgba(255, 34, 34, 0.5);
-            margin-bottom: 10px;
-        }
+        /* Galeria 3D */
+        .gallery-3d-container { position: relative; width: 100%; height: 500px; margin: 0 auto 60px auto; perspective: 1000px; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .gallery-item { position: absolute; width: 300px; height: 450px; background-color: #000; border-radius: 20px; object-fit: cover; transition: all 0.5s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.5); opacity: 0; z-index: 0; transform: scale(0.5); }
+        .gallery-item.active { opacity: 1; z-index: 10; transform: translateX(0) scale(1) rotateY(0deg); box-shadow: var(--glow-strong); border: 2px solid var(--accent-color); }
+        .gallery-item.prev { opacity: 0.6; z-index: 5; transform: translateX(-220px) scale(0.8) rotateY(25deg); filter: brightness(0.5); }
+        .gallery-item.next { opacity: 0.6; z-index: 5; transform: translateX(220px) scale(0.8) rotateY(-25deg); filter: brightness(0.5); }
+        .carousel-instruction { margin-top: -30px; margin-bottom: 50px; font-size: 0.8rem; color: var(--text-secondary); opacity: 0.7; }
 
-        .date-display {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            letter-spacing: 1px;
-            font-weight: 300;
-        }
+        /* Timer */
+        .timer-container { margin-bottom: 60px; }
+        .section-title { font-size: 3rem; margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 34, 34, 0.3); }
+        .timer-grid { display: grid; grid-template-columns: repeat(3, 110px); grid-template-rows: repeat(2, 110px); gap: 15px; justify-content: center; margin-bottom: 20px; }
+        .time-card { background: var(--card-bg); border: 2px solid var(--accent-color); border-radius: 15px; box-shadow: var(--glow-strong); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .time-value { font-size: 2.2rem; font-weight: 700; line-height: 1; margin-bottom: 5px; }
+        .time-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
+        .total-stats p { font-size: 1.1rem; margin-bottom: 5px; }
+        .highlight-minutes { font-weight: 700; color: var(--accent-color); }
 
-        /* Seção Genérica */
-        section {
-            margin-bottom: 80px;
-        }
+        /* Metáforas e Cards */
+        .metaphors-container { text-align: center; margin-bottom: 60px; padding: 0 10px; }
+        .block-title { font-family: 'Great Vibes', cursive; font-size: 2.5rem; color: var(--accent-color); margin-bottom: 30px; text-shadow: 0 0 10px rgba(255, 34, 34, 0.3); }
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; justify-content: center; }
+        .glass-card { background: var(--glass-bg); border: var(--glass-border); border-radius: 15px; padding: 25px; transition: transform 0.3s ease; display: flex; flex-direction: column; align-items: center; }
+        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(255, 34, 34, 0.2); }
+        .card-icon { font-size: 3rem; margin-bottom: 15px; display: block; filter: drop-shadow(0 0 5px var(--accent-color)); }
+        .card-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; color: var(--accent-color); }
+        .card-text { font-size: 0.95rem; line-height: 1.6; color: #ddd; font-weight: 300; }
 
-        .section-title {
-            font-size: 3.5rem;
-            margin-bottom: 40px;
-            color: var(--text-color);
-            text-shadow: 0 0 10px rgba(255, 34, 34, 0.3);
-        }
+        /* Lista de Números */
+        .numbers-list { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 10px; }
+        .number-tag { background: rgba(255, 34, 34, 0.1); border: 1px solid var(--accent-color); padding: 12px 25px; border-radius: 50px; font-size: 1rem; color: #fff; }
 
-        /* --- Galeria de Fotos (Agora primeiro) --- */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            align-items: center;
-        }
+        /* Dedicatória Final (Formatada) */
+        .dedication-section { background: rgba(20, 0, 0, 0.6); padding: 50px 30px; border-radius: 20px; margin: 60px auto; max-width: 800px; border: 1px solid rgba(255, 34, 34, 0.2); box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .dedication-text { font-size: 1.15rem; line-height: 1.9; color: #eee; text-align: justify; white-space: pre-line; font-weight: 300; }
+        .dedication-signature { margin-top: 30px; font-family: 'Great Vibes', cursive; font-size: 2.5rem; color: var(--accent-color); text-align: center; text-shadow: 0 0 10px rgba(255, 34, 34, 0.4); }
 
-        .photo-card {
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            aspect-ratio: 2/3; /* Formato retrato */
-            position: relative;
-        }
+        /* Player */
+        .music-player { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border-top: 2px solid var(--accent-color); padding: 15px 20px; z-index: 100; display: flex; align-items: center; justify-content: space-between; visibility: hidden; opacity: 0; transition: all 1s ease 0.5s; }
+        .music-player.visible { visibility: visible; opacity: 1; }
+        .song-info { display: flex; align-items: center; gap: 15px; }
+        .album-art { width: 45px; height: 45px; background: #222; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; border: 1px solid var(--accent-color); }
+        .song-details h4 { font-size: 0.9rem; margin-bottom: 2px; }
+        .song-details p { font-size: 0.7rem; color: var(--text-secondary); }
+        .player-controls { display: flex; align-items: center; gap: 15px; flex-grow: 1; max-width: 400px; margin: 0 20px; }
+        .play-btn { background: var(--accent-color); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .progress-bar { width: 100%; height: 5px; background: #333; border-radius: 5px; cursor: pointer; }
+        .progress-fill { height: 100%; background: var(--accent-color); width: 0%; border-radius: 5px; }
 
-        /* Efeito de "tilt" nas fotos laterais similar ao print */
-        .photo-card:nth-child(1) { transform: perspective(1000px) rotateY(15deg) scale(0.9); }
-        .photo-card:nth-child(2) { z-index: 2; box-shadow: var(--glow-strong); } /* Foto central em destaque */
-        .photo-card:nth-child(3) { transform: perspective(1000px) rotateY(-15deg) scale(0.9); }
-
-        .photo-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        /* --- Novo Design do Timer --- */
-        .timer-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .timer-grid {
-            display: grid;
-            /* Cria 3 colunas de largura fixa para quadrados perfeitos */
-            grid-template-columns: repeat(3, 130px);
-            grid-template-rows: repeat(2, 130px);
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .time-card {
-            background: var(--card-bg);
-            border: 3px solid var(--accent-color); /* Borda mais grossa */
-            border-radius: 25px; /* Cantos bem arredondados */
-            box-shadow: var(--glow-strong);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            aspect-ratio: 1 / 1; /* Garante que é quadrado */
-        }
-
-        .time-value {
-            font-size: 2.8rem; /* Números grandes */
-            font-weight: 700;
-            line-height: 1;
-            margin-bottom: 5px;
-        }
-
-        .time-label {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        /* Total de Minutos */
-        .total-stats {
-            margin-top: 20px;
-        }
-        .total-stats p {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-        .highlight-minutes {
-            font-weight: 700;
-            color: var(--accent-color);
-        }
-        .total-subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            font-style: italic;
-        }
-
-        /* --- Seção de Bodas --- */
-        .bodas-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .progress-ring-container {
-            position: relative;
-            width: 220px;
-            height: 220px;
-        }
-
-        .bodas-info {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Ícone placeholder para o material */
-        .material-icon {
-            font-size: 3rem;
-            margin-bottom: 10px;
-        }
-
-        .bodas-material {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--accent-color);
-            text-transform: capitalize;
-            margin-bottom: 5px;
-        }
-
-        .bodas-days-left {
-            font-size: 1rem;
-            color: var(--text-color);
-            font-weight: 600;
-        }
-        
-        .bodas-label-small {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        /* SVG Circular Progress */
-        circle {
-            transition: stroke-dashoffset 1s ease-in-out;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-        }
-
-        /* --- Player de Música (Footer) --- */
-        .music-player {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(10, 10, 10, 0.9);
-            backdrop-filter: blur(10px);
-            border-top: 2px solid var(--accent-color);
-            padding: 15px 20px;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 -5px 20px rgba(255, 34, 34, 0.3);
-        }
-
-        .song-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .album-art {
-            width: 50px;
-            height: 50px;
-            background: #222;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            border: 1px solid var(--accent-color);
-        }
-
-        .song-details h4 { font-size: 1rem; margin-bottom: 3px; }
-        .song-details p { font-size: 0.8rem; color: var(--text-secondary); }
-
-        .player-controls {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-grow: 1;
-            max-width: 500px;
-            margin: 0 30px;
-        }
-
-        .play-btn {
-            background: var(--accent-color);
-            border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.4rem;
-            transition: all 0.2s;
-            box-shadow: 0 0 10px var(--accent-color);
-        }
-
-        .play-btn:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--accent-color); }
-
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #333;
-            border-radius: 6px;
-            cursor: pointer;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--accent-color);
-            width: 0%;
-            border-radius: 6px;
-            box-shadow: 0 0 10px var(--accent-color);
-        }
-
-        /* Responsividade */
         @media (max-width: 768px) {
-            h1.main-title { font-size: 3.5rem; }
-            .section-title { font-size: 2.8rem; }
-            
-            /* Ajuste da galeria no mobile */
-            .gallery-grid { grid-template-columns: 1fr; gap: 30px; }
-            .photo-card:nth-child(1), .photo-card:nth-child(3) { transform: none; scale: 0.95; }
-            
-            /* Ajuste do timer no mobile para 2 colunas */
-            .timer-grid {
-                grid-template-columns: repeat(2, 130px);
-                grid-template-rows: repeat(3, 130px);
-            }
-
-            .music-player { flex-direction: column; gap: 15px; padding-bottom: 20px;}
+            h1.main-title { font-size: 3rem; }
+            .gallery-3d-container { height: 400px; }
+            .gallery-item { width: 220px; height: 330px; }
+            .gallery-item.prev { transform: translateX(-140px) scale(0.8) rotateY(25deg); }
+            .gallery-item.next { transform: translateX(140px) scale(0.8) rotateY(-25deg); }
+            .timer-grid { grid-template-columns: repeat(3, 90px); grid-template-rows: repeat(2, 90px); }
+            .time-value { font-size: 1.8rem; }
+            .music-player { flex-direction: column; gap: 10px; padding-bottom: 20px; }
             .player-controls { width: 100%; margin: 0; }
+            .dedication-text { text-align: left; font-size: 1rem; }
+            .gift-icon { font-size: 6rem; }
+            .intro-text { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
 
+    <div id="intro-overlay">
+        <div class="gift-icon">🎁</div>
+        <p class="intro-text">Toque para abrir seu presente</p>
+    </div>
+
     <div id="hearts-container"></div>
 
-    <div class="container">
+    <div class="container" id="main-container">
         <header>
             <h1 class="main-title cursive-font">Samuel & Luiza</h1>
             <div class="date-display">24 de Janeiro de 2025</div>
@@ -364,216 +138,245 @@
 
         <main>
             <section>
-                <div class="gallery-grid">
-                    <div class="photo-card">
-                        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?q=80&w=600&auto=format&fit=crop" alt="Foto Casal 1">
-                    </div>
-                    <div class="photo-card">
-                        <img src="https://images.unsplash.com/photo-1621621667797-e06afc217fb0?q=80&w=800&auto=format&fit=crop" alt="Foto Casal Centro">
-                    </div>
-                    <div class="photo-card">
-                        <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600&auto=format&fit=crop" alt="Foto Casal 3">
-                    </div>
+                <div class="gallery-3d-container" id="gallery-3d">
+                    <img src="foto1.jpg" class="gallery-item" alt="Foto 1">
+                    <img src="foto2.jpg" class="gallery-item" alt="Foto 2">
+                    <img src="foto3.jpg" class="gallery-item" alt="Foto 3">
+                    <img src="foto4.jpg" class="gallery-item" alt="Foto 4">
+                    <img src="foto5.jpg" class="gallery-item" alt="Foto 5">
                 </div>
+                <div class="carousel-instruction">(Use a roda do mouse, setas ou arraste para navegar)</div>
             </section>
 
             <section class="timer-container">
                 <h2 class="section-title cursive-font">Tempo Juntos</h2>
-                
                 <div class="timer-grid" id="timer">
-                    <div class="time-card">
-                        <span class="time-value" id="years">0</span>
-                        <span class="time-label">Anos</span>
-                    </div>
-                    <div class="time-card">
-                        <span class="time-value" id="months">0</span>
-                        <span class="time-label">Meses</span>
-                    </div>
-                    <div class="time-card">
-                        <span class="time-value" id="days">0</span>
-                        <span class="time-label">Dias</span>
-                    </div>
-                    <div class="time-card">
-                        <span class="time-value" id="hours">0</span>
-                        <span class="time-label">Horas</span>
-                    </div>
-                    <div class="time-card">
-                        <span class="time-value" id="minutes">0</span>
-                        <span class="time-label">Minutos</span>
-                    </div>
-                    <div class="time-card">
-                        <span class="time-value" id="seconds">0</span>
-                        <span class="time-label">Segundos</span>
-                    </div>
+                    <div class="time-card"><span class="time-value" id="years">0</span><span class="time-label">Anos</span></div>
+                    <div class="time-card"><span class="time-value" id="months">0</span><span class="time-label">Meses</span></div>
+                    <div class="time-card"><span class="time-value" id="days">0</span><span class="time-label">Dias</span></div>
+                    <div class="time-card"><span class="time-value" id="hours">0</span><span class="time-label">Horas</span></div>
+                    <div class="time-card"><span class="time-value" id="minutes">0</span><span class="time-label">Minutos</span></div>
+                    <div class="time-card"><span class="time-value" id="seconds">0</span><span class="time-label">Segundos</span></div>
                 </div>
-
                 <div class="total-stats">
-                    <p>Um total de <span id="total-minutes-display" class="highlight-minutes">0</span> minutos</p>
-                    <p class="total-subtitle">Aproveitando cada segundo ao seu lado.</p> 
+                    <p>Total de <span id="total-minutes-display" class="highlight-minutes">0</span> minutos</p>
                 </div>
             </section>
+            
+            <section class="metaphors-container">
+                 <h3 class="block-title">Nossa Realidade em Números</h3>
+                 <p style="margin-bottom: 20px; font-style: italic;">Nesse primeiro ano, nós compartilhamos...</p>
+                 <ul class="numbers-list">
+                     <li class="number-tag">365 dias de parceria</li>
+                     <li class="number-tag">8.760 horas escolhendo o que comer</li>
+                     <li class="number-tag">525.600 minutos de cumplicidade</li>
+                     <li class="number-tag">31.536.000 segundos de amor</li>
+                 </ul>
+            </section>
 
-            <section class="bodas-container">
-                <h2 class="section-title cursive-font">Próxima Boda</h2>
-                <div class="progress-ring-container">
-                    <svg width="220" height="220">
-                        <circle stroke="#1a1a1a" stroke-width="10" fill="transparent" r="100" cx="110" cy="110"/>
-                        <circle id="progress-ring" stroke="#ff2222" stroke-width="10" fill="transparent" r="100" cx="110" cy="110" stroke-dasharray="628.32" stroke-dashoffset="628.32"/>
-                    </svg>
-                    <div class="bodas-info">
-                        <div class="material-icon" id="bodas-icon">☁️</div>
-                        <span class="bodas-material" id="bodas-name">Papel</span>
-                        <div class="bodas-days-left" id="bodas-days-left">Faltam 0 dias</div>
-                        <span class="bodas-label-small">para completar <span id="bodas-goal">1 Ano</span></span>
+            <section class="metaphors-container">
+                <h3 class="block-title">Nossa História em Outras Dimensões</h3>
+                <div class="cards-grid">
+                    <div class="glass-card">
+                        <span class="card-icon">☀️</span>
+                        <h4 class="card-title">Ao redor do Sol</h4>
+                        <p class="card-text">Desde que começamos, a Terra deu uma volta inteira no Sol só para nos ver chegar juntinhos até aqui.</p>
+                    </div>
+                    <div class="glass-card">
+                        <span class="card-icon">🍂</span>
+                        <h4 class="card-title">4 Estações</h4>
+                        <p class="card-text">Sobrevivemos ao inverno, florescemos na primavera, aproveitamos o verão e nos renovamos no outono. Nosso amor é pra todas as estações.</p>
+                    </div>
+                    <div class="glass-card">
+                        <span class="card-icon">🌑</span>
+                        <h4 class="card-title">Fases da Lua</h4>
+                        <p class="card-text">A lua mudou de fase 12 vezes, mas o que eu sinto por você não mudou nem um pouquinho.</p>
                     </div>
                 </div>
             </section>
+
+            <section class="metaphors-container">
+                <h3 class="block-title">Um Exército de Vidas</h3>
+                <div class="cards-grid">
+                    <div class="glass-card">
+                        <span class="card-icon">🦋</span>
+                        <h4 class="card-title">13 Vidas de Borboleta</h4>
+                        <p class="card-text">Se fôssemos borboletas, já teríamos vivido 13 vidas inteiras. Em cada uma delas eu te escolheria e me apaixonaria de novo.</p>
+                    </div>
+                    <div class="glass-card">
+                        <span class="card-icon">🐚</span>
+                        <h4 class="card-title">3 Vidas de Polvo</h4>
+                        <p class="card-text">Vivemos o equivalente a 3 existências de polvos. Ou seja, eu já te amei com o equivalente a 9 corações diferentes pulsando forte.</p>
+                    </div>
+                    <div class="glass-card">
+                        <span class="card-icon">🦎</span>
+                        <h4 class="card-title">6 Trocas de Pele</h4>
+                        <p class="card-text">Nesse ano, já deixamos para trás 6 versões antigas de nós mesmos para que pudéssemos crescer e caber um no amor do outro.</p>
+                    </div>
+                    <div class="glass-card">
+                        <span class="card-icon">🐝</span>
+                        <h4 class="card-title">Lealdade das Abelhas</h4>
+                        <p class="card-text">Vivemos o equivalente a 8 vidas de abelha. Produzimos nosso melzinho suficiente para o resto da vida juntinhos.</p>
+                    </div>
+                    <div class="glass-card">
+                        <span class="card-icon">⏳</span>
+                        <h4 class="card-title">365 Vidas de Efêmeros</h4>
+                        <p class="card-text">Para eles, um dia é uma vida. Só nesse período eu já te amei por 365 existências diferentes e vou amar cada vez mais.</p>
+                    </div>
+                     <div class="glass-card">
+                        <span class="card-icon">🌻</span>
+                        <h4 class="card-title">4 Ciclos de Girassol</h4>
+                        <p class="card-text">Nós plantamos, crescemos e nos voltamos para o sol quatro vezes seguidas, ficando juntos cada vez mais fortes.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="metaphors-container">
+                <h3 class="block-title">Dedicatória Final</h3>
+                <div class="dedication-section">
+                    <div class="dedication-text">
+Oi minha gatinha, não sei necessariamente em que momento você parou pra ler isso, mas se está lendo já é um bom sinal de que consegui terminar o site kkkkkk.
+
+Indo agora pro que interessa: hoje nós dois fazemos um ano de namoro, e por mais que eu não seja tão bom com palavras ou textos, eu quis escrever isso pra você.
+
+Ambos sabemos que nós começamos a conversar um pouco antes de oficializar qualquer relacionamento, já que você ficou me enrolando né? O importante é que em janeiro finalmente fui conversar com seus pais, e de lá pra cá deu tudo certo.
+
+Eu nunca tinha namorado ou assumido alguém assim antes, então confesso que não sabia nem mesmo o que fazer ou falar lá na hora. Mas, mesmo assim, sabia que precisava ser feito, porque só assim finalmente ia poder dizer que você era oficialmente minha namorada.
+
+Agora que um ano se passou, eu posso dizer que não tenho arrependimento nenhum. Eu sempre idealizei como seria namorar ou ter uma namorada, e sinceramente, você me entregou tudo, e além do que eu esperava. Ali eu percebi que já te amava antes mesmo de te conhecer, pelo ideal que eu tinha e encontrei em você.
+
+Não consigo nem descrever como foi cada momento desse nosso ano juntos. Só posso dizer que sou muito grato por tudo que você fez e continua fazendo por mim. Mesmo que eu procure, não acharia nenhum motivo para reclamar sobre tudo que temos juntos, pois todas as vezes que estávamos juntos eu só tinha mais certeza ainda que te amava, e que esse amor é recíproco.
+
+Eu sei que às vezes sou uma pessoa difícil de se lidar, e espero que eu tenha melhorado com o tempo, afinal você sempre mereceu tudo que tem de bom nesse mundo. Peço desculpas por todas as vezes que eu te fiz chorar, se sentir triste ou magoada; minha intenção nesses momentos nunca foi essa, e só de pensar nisso já fico chateado também.
+
+Desculpa por todas as vezes que me atrasei, deixei tudo pra última hora ou que posso ter sido grosso com você. Saiba que sempre vou tentar melhorar, pois você merece muito, muito mais que isso.
+
+Desculpa por não ter conseguido comprar tantos presentes quanto você merece, mas espero que esses, mesmo que simples, ainda te façam feliz. Te garanto que sempre que eu melhorar de vida você vai ser a primeira que vou lembrar, afinal esteve comigo mesmo nos momentos ruins.
+
+Eu te amo demais minha gatinha, mesmo que às vezes possa não parecer. Muito obrigado por tudo que fez e faz por mim. Saiba que eu sempre vou estar disponível pra tudo que você precisar, que sempre vou fazer o máximo para que você se sinta amada e desejada, e que sempre vou te amar independente do que acontecer. Espero que, mesmo que simples, essas palavras possam demonstrar pelo menos um pouquinho do meu infinito amor por você.
+
+E afinal, se em um ano já vivemos tanta coisa, fico ansioso pro que nos aguarda por toda eternidade.
+                    </div>
+                    <div class="dedication-signature">Eu te amo minha gatinha</div>
+                </div>
+            </section>
+
         </main>
     </div>
 
-    <footer class="music-player">
-        <audio id="audio-player" loop>
-            <source src="musica.mp3" type="audio/mpeg">
-        </audio>
-
+    <footer class="music-player" id="music-player-bar">
+        <audio id="audio-player" loop><source src="musica.mp3" type="audio/mpeg"></audio>
         <div class="song-info">
             <div class="album-art">🎵</div>
-            <div class="song-details">
-                <h4>Nossa Música</h4>
-                <p>Trilha Sonora Especial</p>
-            </div>
+            <div class="song-details"><h4>Nossa Música</h4><p>Trilha Sonora</p></div>
         </div>
-
         <div class="player-controls">
             <button class="play-btn" id="play-btn">▶</button>
-            <div class="progress-bar" id="progress-container">
-                <div class="progress-fill" id="progress-fill"></div>
-            </div>
+            <div class="progress-bar" id="progress-container"><div class="progress-fill" id="progress-fill"></div></div>
         </div>
     </footer>
 
     <script>
-        // --- CONFIGURAÇÃO DA DATA ---
-        const startDate = new Date('2025-01-24T00:00:00');
+        // Intro e Música
+        const introOverlay = document.getElementById('intro-overlay');
+        const mainContainer = document.getElementById('main-container');
+        const musicPlayerBar = document.getElementById('music-player-bar');
+        const audio = document.getElementById('audio-player');
+        const playBtn = document.getElementById('play-btn');
 
-        // --- Lógica do Timer e Minutos Totais ---
+        introOverlay.addEventListener('click', () => {
+            introOverlay.classList.add('hidden');
+            mainContainer.classList.add('visible');
+            musicPlayerBar.classList.add('visible');
+            audio.play().then(() => { playBtn.innerText = '⏸'; }).catch(e => { console.log("Autoplay bloqueado"); });
+        });
+
+        // Galeria 3D
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const totalItems = galleryItems.length;
+        let currentIndex = 2;
+
+        function updateGallery() {
+            if (totalItems === 0) return;
+            galleryItems.forEach(item => { item.classList.remove('active', 'prev', 'next'); });
+            let prevIndex = (currentIndex - 1 + totalItems) % totalItems;
+            let nextIndex = (currentIndex + 1) % totalItems;
+            galleryItems[currentIndex].classList.add('active');
+            galleryItems[prevIndex].classList.add('prev');
+            galleryItems[nextIndex].classList.add('next');
+        }
+        updateGallery();
+
+        const galleryContainer = document.getElementById('gallery-3d');
+        galleryContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (e.deltaY > 0) currentIndex = (currentIndex + 1) % totalItems;
+            else currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateGallery();
+        });
+
+        let touchStartX = 0; let touchEndX = 0;
+        galleryContainer.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+        galleryContainer.addEventListener('touchend', (e) => { touchEndX = e.changedTouches[0].screenX; handleSwipeGesture(); }, {passive: true});
+        function handleSwipeGesture() {
+            if (touchEndX < touchStartX - 40) currentIndex = (currentIndex + 1) % totalItems;
+            if (touchEndX > touchStartX + 40) currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateGallery();
+        }
+
+        // Timer (Lógica de Calendário Real)
+        const startDate = new Date('2025-01-24T00:00:00');
         function updateTimer() {
             const now = new Date();
             const diff = now - startDate;
 
-            // Cálculo básico de tempo
-            const daysTotal = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const years = Math.floor(daysTotal / 365.25); // Usando 365.25 para ser mais preciso com bissextos
-            const months = Math.floor((daysTotal % 365.25) / 30.44); // Média de dias no mês
-            const days = Math.floor((daysTotal % 365.25) % 30.44);
-            
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+
+            if (days < 0) {
+                months--;
+                const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += lastMonth.getDate();
+            }
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
             const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
             const seconds = Math.floor((diff / 1000) % 60);
 
-            // Atualiza os cards do timer
             document.getElementById('years').innerText = years;
             document.getElementById('months').innerText = months;
             document.getElementById('days').innerText = days;
             document.getElementById('hours').innerText = String(hours).padStart(2, '0');
             document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
             document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
-
-            // Cálculo e exibição dos Minutos Totais
+            
             const totalMinutesCount = Math.floor(diff / (1000 * 60));
-            // Formata o número com pontos (ex: 123.456)
             document.getElementById('total-minutes-display').innerText = totalMinutesCount.toLocaleString('pt-BR');
-
-            updateBodas(years, startDate);
         }
+        setInterval(updateTimer, 1000); updateTimer();
 
-        // --- Lógica das Bodas ---
-        function updateBodas(currentYears, start) {
-            const bodasData = [
-                { name: "Papel", icon: "📜" },    // 1 ano
-                { name: "Algodão", icon: "☁️" },  // 2 anos
-                { name: "Trigo", icon: "🌾" },    // 3 anos
-                { name: "Flores", icon: "💐" },   // 4 anos
-                { name: "Madeira", icon: "🌳" }   // 5 anos
-            ];
-            
-            const targetYear = currentYears + 1;
-            const bodaIndex = Math.min(currentYears, bodasData.length - 1);
-            const nextBoda = bodasData[bodaIndex];
-            
-            // Calcula a data exata do próximo aniversário
-            const nextAnniversary = new Date(start);
-            nextAnniversary.setFullYear(start.getFullYear() + targetYear);
-            
-            const now = new Date();
-            const diffTime = nextAnniversary - now;
-            // Arredonda para cima para não mostrar "0 dias" antes da hora
-            const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-            // Atualiza textos e ícone
-            document.getElementById('bodas-name').innerText = nextBoda.name;
-            document.getElementById('bodas-icon').innerText = nextBoda.icon;
-            document.getElementById('bodas-goal').innerText = targetYear + (targetYear === 1 ? ' Ano' : ' Anos');
-            document.getElementById('bodas-days-left').innerText = `Faltam ${daysLeft} dias`;
-
-            // Barra Circular
-            const circle = document.getElementById('progress-ring');
-            const circumference = 628.32; // 2 * PI * 100
-            // Calcula porcentagem do ano (aprox. 365 dias)
-            let percentage = (365 - daysLeft) / 365;
-            if (percentage < 0) percentage = 0;
-            if (percentage > 1) percentage = 1;
-
-            const offset = circumference - (percentage * circumference);
-            circle.style.strokeDashoffset = offset;
-        }
-
-        // Inicia o timer
-        setInterval(updateTimer, 1000);
-        updateTimer();
-
-        // --- Animação de Corações ---
+        // Corações
         function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 2 + 4 + 's';
-            heart.style.fontSize = Math.random() * 15 + 10 + 'px';
-            document.getElementById('hearts-container').appendChild(heart);
-            setTimeout(() => { heart.remove(); }, 6000);
+            const heart = document.createElement('div'); heart.classList.add('heart'); heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + 'vw'; heart.style.animationDuration = Math.random() * 2 + 4 + 's';
+            heart.style.fontSize = Math.random() * 15 + 10 + 'px'; document.getElementById('hearts-container').appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
         }
         setInterval(createHeart, 400);
 
-        // --- Player de Música JS ---
-        const audio = document.getElementById('audio-player');
-        const playBtn = document.getElementById('play-btn');
+        // Player Controls
         const progressFill = document.getElementById('progress-fill');
         const progressContainer = document.getElementById('progress-container');
-
         playBtn.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play().then(() => { playBtn.innerText = '⏸'; })
-                .catch(e => console.log("Interação necessária para tocar áudio."));
-            } else {
-                audio.pause();
-                playBtn.innerText = '▶';
-            }
+            if (audio.paused) { audio.play(); playBtn.innerText = '⏸'; } else { audio.pause(); playBtn.innerText = '▶'; }
         });
-
-        audio.addEventListener('timeupdate', () => {
-            if(audio.duration) {
-                const percent = (audio.currentTime / audio.duration) * 100;
-                progressFill.style.width = percent + '%';
-            }
-        });
-
-        progressContainer.addEventListener('click', (e) => {
-            const width = progressContainer.clientWidth;
-            const clickX = e.offsetX;
-            const duration = audio.duration;
-            audio.currentTime = (clickX / width) * duration;
-        });
+        audio.addEventListener('timeupdate', () => { if(audio.duration) progressFill.style.width = (audio.currentTime / audio.duration) * 100 + '%'; });
+        progressContainer.addEventListener('click', (e) => { audio.currentTime = (e.offsetX / progressContainer.clientWidth) * audio.duration; });
     </script>
 </body>
 </html>
